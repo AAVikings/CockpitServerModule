@@ -29,6 +29,7 @@ const orderSchema = new Schema(
       date: Date,
     }],
     orderData: Object,
+    reason: Object,
   },
   {
     timestamps: true,

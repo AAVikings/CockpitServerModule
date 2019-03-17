@@ -30,6 +30,7 @@ const signalSchema = new Schema(
     }],
     context: Object,
     orderData: Object,
+    reason: Object,
   },
   {
     timestamps: true,
