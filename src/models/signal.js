@@ -15,7 +15,10 @@ const signalSchema = new Schema(
       type: String,
       required: true,
     },
-    changeLog: [{
+    context: Object,
+    orderData: Object,
+    reason: Object,
+    changeLogs: [{
       fromState: {
         type: String,
         enum: SignalStateEnum,
@@ -28,9 +31,6 @@ const signalSchema = new Schema(
       },
       date: Date,
     }],
-    context: Object,
-    orderData: Object,
-    reason: Object,
   },
   {
     timestamps: true,

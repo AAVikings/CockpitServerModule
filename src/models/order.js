@@ -15,7 +15,9 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
-    changeLog: [{
+    orderData: Object,
+    reason: Object,
+    changeLogs: [{
       fromState: {
         type: String,
         enum: OrderStateEnum,
@@ -28,8 +30,6 @@ const orderSchema = new Schema(
       },
       date: Date,
     }],
-    orderData: Object,
-    reason: Object,
   },
   {
     timestamps: true,
