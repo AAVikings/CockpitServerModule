@@ -1,13 +1,13 @@
 {
-  "name": "modulename-server",
+  "name": "cockpit-server",
   "version": "0.0.1",
-  "description": "Advanced Algos modulename backend API",
+  "description": "Advanced Algos cockpit backend API",
   "author": "",
   "license": "",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Superalgos/ModulenameServerModule.git"
+    "url": "git+https://github.com/Superalgos/CockpitServerModule.git"
   },
   "scripts": {
     "start": "nodemon --exec babel-node --presets env,stage-2 src/index.js",
@@ -34,6 +34,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
+    "graphql-type-json": "^0.2.1",
     "mongoose": "^5.3.4"
   }
 }

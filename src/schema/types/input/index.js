@@ -1,13 +1,7 @@
-import PlotterInputType from './Plotter';
-import PrizeInputType from './Prize';
-import FormulaInputType from './Formula';
-import EventInputType from './Event';
-import SubPrizeInputType from './SubPrize';
+import OrderInputType from './Order';
+import SignalInputType from './Signal';
 
 export {
-  PlotterInputType,
-  PrizeInputType,
-  FormulaInputType,
-  EventInputType,
-  SubPrizeInputType,
+  OrderInputType,
+  SignalInputType,
 };

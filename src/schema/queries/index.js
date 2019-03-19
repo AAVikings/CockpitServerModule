@@ -2,14 +2,14 @@ import {
   GraphQLObjectType,
 } from 'graphql';
 
-import EventsQuery from './Events';
-import EventsByHostQuery from './EventsByHost';
+import OrdersByCloneIdQuery from './OrdersByCloneId';
+import SignalsByCloneIdQuery from './SignalsByCloneId';
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: Object.assign(
-    EventsQuery,
-    EventsByHostQuery,
+    OrdersByCloneIdQuery,
+    SignalsByCloneIdQuery,
   ),
 });
 
