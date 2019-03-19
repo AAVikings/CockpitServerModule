@@ -1,4 +1,5 @@
 import {
+  GraphQLInt,
   GraphQLObjectType,
 } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
@@ -11,7 +12,7 @@ const Type = new GraphQLObjectType({
     reason: { type: GraphQLJSON },
     fromState: { type: OrderStateEnumType },
     toState: { type: OrderStateEnumType },
-    date: Number,
+    date: { type: GraphQLInt },
   }),
 });
 
