@@ -10,7 +10,6 @@ const Type = new GraphQLInputObjectType({
   fields: () => ({
     cloneId: { type: GraphQLString },
     orderData: { type: GraphQLJSON },
-    reason: { type: GraphQLJSON },
   }),
 });
 

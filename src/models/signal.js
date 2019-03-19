@@ -17,12 +17,11 @@ const signalSchema = new Schema(
     },
     context: Object,
     orderData: Object,
-    reason: Object,
     changeLogs: [{
+      reason: Object,
       fromState: {
         type: String,
         enum: SignalStateEnum,
-        required: true,
       },
       toState: {
         type: String,

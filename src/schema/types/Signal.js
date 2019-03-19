@@ -15,7 +15,6 @@ const Type = new GraphQLObjectType({
     cloneId: { type: GraphQLString },
     context: { type: GraphQLJSON },
     orderData: { type: GraphQLJSON },
-    reason: { type: GraphQLJSON },
     changeLogs: {
       type: new GraphQLList(SignalChangeLogType),
       resolve(parent) {

@@ -16,12 +16,11 @@ const orderSchema = new Schema(
       required: true,
     },
     orderData: Object,
-    reason: Object,
     changeLogs: [{
+      reason: Object,
       fromState: {
         type: String,
         enum: OrderStateEnum,
-        required: true,
       },
       toState: {
         type: String,

@@ -2,6 +2,7 @@ import {
   GraphQLNonNull,
   GraphQLID,
 } from 'graphql';
+import GraphQLJSON from 'graphql-type-json';
 import {
   WrongArgumentsError,
 } from '../../errors';
@@ -21,13 +22,22 @@ import {
 const args = {
   id: { type: new GraphQLNonNull(GraphQLID) },
   state: { type: SignalStateEnum },
+  reason: { type: GraphQLJSON },
 };
 
-const resolve = (parent, { id: _id, state }) => {
+const resolve = (parent, { id: _id, state, reason }) => {
   switch (state) {
     case ACCEPTED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: SIGNALED }, { state }, { new: true }, (err, modifiedSignal) => {
+        Signal.findOneAndUpdate({ _id, state: SIGNALED }, {
+          state,
+          $push: {
+            reason,
+            fromState: SIGNALED,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
           if (err) {
             rej(err);
             return;
@@ -37,7 +47,15 @@ const resolve = (parent, { id: _id, state }) => {
       });
     case REFUSED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: SIGNALED }, { state }, { new: true }, (err, modifiedSignal) => {
+        Signal.findOneAndUpdate({ _id, state: SIGNALED }, {
+          state,
+          $push: {
+            reason,
+            fromState: SIGNALED,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
           if (err) {
             rej(err);
             return;
@@ -47,7 +65,15 @@ const resolve = (parent, { id: _id, state }) => {
       });
     case CANCELED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: SIGNALED }, { state }, { new: true }, (err, modifiedSignal) => {
+        Signal.findOneAndUpdate({ _id, state: SIGNALED }, {
+          state,
+          $push: {
+            reason,
+            fromState: SIGNALED,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
           if (err) {
             rej(err);
             return;
@@ -57,7 +83,15 @@ const resolve = (parent, { id: _id, state }) => {
       });
     case FAILED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: ACCEPTED }, { state }, { new: true }, (err, modifiedSignal) => {
+        Signal.findOneAndUpdate({ _id, state: ACCEPTED }, {
+          state,
+          $push: {
+            reason,
+            fromState: ACCEPTED,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
           if (err) {
             rej(err);
             return;
@@ -67,7 +101,15 @@ const resolve = (parent, { id: _id, state }) => {
       });
     case PROCESSED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: ACCEPTED }, { state }, { new: true }, (err, modifiedSignal) => {
+        Signal.findOneAndUpdate({ _id, state: ACCEPTED }, {
+          state,
+          $push: {
+            reason,
+            fromState: ACCEPTED,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
           if (err) {
             rej(err);
             return;

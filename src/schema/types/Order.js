@@ -14,7 +14,6 @@ const Type = new GraphQLObjectType({
     state: { type: OrderStateEnumType },
     cloneId: { type: GraphQLString },
     orderData: { type: GraphQLJSON },
-    reason: { type: GraphQLJSON },
     changeLogs: {
       type: new GraphQLList(OrderChangeLogType),
       resolve(parent) {
