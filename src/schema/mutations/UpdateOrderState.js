@@ -13,6 +13,7 @@ import OrderStateEnum from '../types/enum/OrderState';
 import {
   CANCELED,
   ORDERED,
+  IN_PROCESS,
   FAILED,
   PROCESSED,
 } from '../../enums/OrderState';
@@ -43,7 +44,7 @@ const resolve = (parent, { id: _id, state, reason }) => {
           res(modifiedOrder);
         });
       });
-    case FAILED:
+    case IN_PROCESS:
       return new Promise((res, rej) => {
         Order.findOneAndUpdate({ _id, state: ORDERED }, {
           state,
@@ -61,13 +62,31 @@ const resolve = (parent, { id: _id, state, reason }) => {
           res(modifiedOrder);
         });
       });
-    case PROCESSED:
+    case FAILED:
       return new Promise((res, rej) => {
-        Order.findOneAndUpdate({ _id, state: ORDERED }, {
+        Order.findOneAndUpdate({ _id, state: IN_PROCESS }, {
           state,
           $push: {
             reason,
-            fromState: ORDERED,
+            fromState: IN_PROCESS,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedOrder) => {
+          if (err) {
+            rej(err);
+            return;
+          }
+          res(modifiedOrder);
+        });
+      });
+    case PROCESSED:
+      return new Promise((res, rej) => {
+        Order.findOneAndUpdate({ _id, state: IN_PROCESS }, {
+          state,
+          $push: {
+            reason,
+            fromState: IN_PROCESS,
             toState: state,
             date: Date.now(),
           },
