@@ -1,4 +1,5 @@
 import {
+  GraphQLID,
   GraphQLList,
   GraphQLString,
   GraphQLObjectType,
@@ -11,6 +12,7 @@ const Type = new GraphQLObjectType({
   name: 'Order',
   description: 'Order definition',
   fields: () => ({
+    id: { type: GraphQLID },
     state: { type: OrderStateEnumType },
     cloneId: { type: GraphQLString },
     orderData: { type: GraphQLJSON },
