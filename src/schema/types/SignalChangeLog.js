@@ -10,9 +10,15 @@ const Type = new GraphQLObjectType({
   description: 'SignalChangeLog definition',
   fields: () => ({
     reason: { type: GraphQLJSON },
-    fromState: { type: SignalStateEnumType },
-    toState: { type: SignalStateEnumType },
-    date: { type: GraphQLInt },
+    state: { type: SignalStateEnumType },
+    context: { type: GraphQLJSON },
+    orderData: { type: GraphQLJSON },
+    date: {
+      type: GraphQLInt,
+      resolve(parent) {
+        return Math.trunc(parent.date.getTime() / 1000);
+      },
+    },
   }),
 });
 
