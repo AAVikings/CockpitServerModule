@@ -15,6 +15,7 @@ import {
   ACCEPTED,
   REFUSED,
   CANCELED,
+  IN_PROCESS,
   FAILED,
   PROCESSED,
 } from '../../enums/SignalState';
@@ -81,7 +82,7 @@ const resolve = (parent, { id: _id, state, reason }) => {
           res(modifiedSignal);
         });
       });
-    case FAILED:
+    case IN_PROCESS:
       return new Promise((res, rej) => {
         Signal.findOneAndUpdate({ _id, state: ACCEPTED }, {
           state,
@@ -99,13 +100,31 @@ const resolve = (parent, { id: _id, state, reason }) => {
           res(modifiedSignal);
         });
       });
-    case PROCESSED:
+    case FAILED:
       return new Promise((res, rej) => {
-        Signal.findOneAndUpdate({ _id, state: ACCEPTED }, {
+        Signal.findOneAndUpdate({ _id, state: IN_PROCESS }, {
           state,
           $push: {
             reason,
-            fromState: ACCEPTED,
+            fromState: IN_PROCESS,
+            toState: state,
+            date: Date.now(),
+          },
+        }, { new: true }, (err, modifiedSignal) => {
+          if (err) {
+            rej(err);
+            return;
+          }
+          res(modifiedSignal);
+        });
+      });
+    case PROCESSED:
+      return new Promise((res, rej) => {
+        Signal.findOneAndUpdate({ _id, state: IN_PROCESS }, {
+          state,
+          $push: {
+            reason,
+            fromState: IN_PROCESS,
             toState: state,
             date: Date.now(),
           },
