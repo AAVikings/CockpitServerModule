@@ -25,7 +25,7 @@ const resolve = (parent, { cloneId, state }) => new Promise((res, rej) => {
 });
 
 const query = {
-  signalsByClondeId: {
+  signalsByCloneId: {
     type: new GraphQLList(SignalType),
     args,
     resolve,
