@@ -1,32 +1,30 @@
 import {
   GraphQLNonNull,
-  GraphQLString,
+  GraphQLID,
 } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
 import { SignalType } from '../types';
 import { Signal } from '../../models';
 import SignalStateEnum from '../types/enum/SignalState';
 
-
-export const args = {
-  cloneId: { type: new GraphQLNonNull(GraphQLString) },
-  state: { type: new GraphQLNonNull(SignalStateEnum) },
+const args = {
+  id: { type: new GraphQLNonNull(GraphQLID) },
+  state: { type: SignalStateEnum },
   context: { type: GraphQLJSON },
   orderData: { type: GraphQLJSON },
   reason: { type: GraphQLJSON },
 };
 
 const resolve = (parent, {
-  cloneId,
+  id: _id,
   state,
   context,
   orderData,
   reason,
 }) => {
   const date = Date.now();
-  const signal = Object.assign(
+  const signalUpdate = Object.assign(
     (state) ? { state } : {},
-    (cloneId) ? { cloneId } : {},
     (context) ? { context } : {},
     (orderData) ? { orderData } : {},
   );
@@ -37,23 +35,27 @@ const resolve = (parent, {
     (orderData) ? { orderData } : {},
     { date },
   );
-  signal.changeLogs = [changeLog];
 
-  const newSignal = new Signal(signal);
+  signalUpdate.$push = { changeLogs: changeLog };
 
   return new Promise((res, rej) => {
-    newSignal.save((err) => {
-      if (err) {
-        rej(err);
-        return;
-      }
-      res(newSignal);
-    });
+    Signal.findOneAndUpdate(
+      { _id },
+      signalUpdate,
+      { new: true },
+      (err, modifiedSignal) => {
+        if (err) {
+          rej(err);
+          return;
+        }
+        res(modifiedSignal);
+      },
+    );
   });
 };
 
 const mutation = {
-  createSignal: {
+  updateSignal: {
     type: SignalType,
     args,
     resolve,
