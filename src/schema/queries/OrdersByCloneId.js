@@ -25,7 +25,7 @@ const resolve = (parent, { cloneId, state }) => new Promise((res, rej) => {
 });
 
 const query = {
-  ordersByClondeId: {
+  ordersByCloneId: {
     type: new GraphQLList(OrderType),
     args,
     resolve,
