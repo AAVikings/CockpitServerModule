@@ -1,0 +1,27 @@
+import mongoose, { Schema } from 'mongoose';
+
+const cloneSettingsSchema = new Schema(
+  {
+    cloneId: {
+      type: String,
+      required: true,
+    },
+    autopilot: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    changeLogs: [{
+      reason: Object,
+      autopilot: Boolean,
+      date: Date,
+    }],
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const CloneSettings = mongoose.model('CloneSettings', cloneSettingsSchema);
+
+export default CloneSettings;
