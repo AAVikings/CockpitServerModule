@@ -5,38 +5,35 @@ import {
 import GraphQLJSON from 'graphql-type-json';
 import { SignalType } from '../types';
 import { Signal } from '../../models';
-import SignalStateEnum from '../types/enum/SignalState';
+import { WrongArgumentsError } from '../../errors';
 
 const args = {
   id: { type: new GraphQLNonNull(GraphQLID) },
-  state: { type: SignalStateEnum },
-  context: { type: GraphQLJSON },
-  orderData: { type: GraphQLJSON },
-  reason: { type: GraphQLJSON },
+  message: { type: new GraphQLNonNull(GraphQLJSON) },
 };
 
 const resolve = (parent, {
   id: _id,
-  state,
-  context,
-  orderData,
-  reason,
+  message,
 }) => {
   const date = Date.now();
-  const signalUpdate = Object.assign(
-    (state) ? { state } : {},
-    (context) ? { context } : {},
-    (orderData) ? { orderData } : {},
-  );
-  const changeLog = Object.assign(
-    (reason) ? { reason } : {},
-    (state) ? { state } : {},
-    (context) ? { context } : {},
-    (orderData) ? { orderData } : {},
-    { date },
-  );
 
-  signalUpdate.$push = { changeLogs: changeLog };
+  if (message.order === undefined) {
+    throw new WrongArgumentsError('"message" should contain an "order" property');
+  }
+
+  const signalUpdate = {
+    orderId: message.order.id,
+    orderCreator: message.order.creator,
+    orderStatus: message.order.status,
+    orderData: message.order,
+    $push: {
+      changeLogs: {
+        message,
+        date,
+      },
+    },
+  };
 
   return new Promise((res, rej) => {
     Signal.findOneAndUpdate(

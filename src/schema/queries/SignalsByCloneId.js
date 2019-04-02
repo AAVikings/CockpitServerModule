@@ -5,16 +5,16 @@ import {
 } from 'graphql';
 import { SignalType } from '../types';
 import { Signal } from '../../models';
-import SignalState from '../types/enum/SignalState';
 
 const args = {
   cloneId: { type: new GraphQLNonNull(GraphQLString) },
-  state: { type: SignalState },
+  orderStatus: { type: GraphQLString },
 };
 
-const resolve = (parent, { cloneId, state }) => new Promise((res, rej) => {
+const resolve = (parent, { cloneId, orderStatus }) => new Promise((res, rej) => {
   const request = { cloneId };
-  if (state) { request.state = state; }
+  if (orderStatus) { request.orderStatus = orderStatus; }
+
   Signal.find(request).exec((err, strategies) => {
     if (err) {
       rej(err);
