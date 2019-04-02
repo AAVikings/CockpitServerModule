@@ -1,30 +1,26 @@
 import mongoose, { Schema } from 'mongoose';
-import {
-  SIGNALED,
-  SignalStateEnum,
-} from '../enums/SignalState';
 
 const signalSchema = new Schema(
   {
-    state: {
-      type: String,
-      enum: SignalStateEnum,
-      default: SIGNALED,
-    },
     cloneId: {
       type: String,
       required: true,
     },
-    context: Object,
+    orderId: {
+      type: String,
+      required: true,
+    },
+    orderCreator: {
+      type: String,
+      required: true,
+    },
+    orderStatus: {
+      type: String,
+      required: true,
+    },
     orderData: Object,
     changeLogs: [{
-      reason: Object,
-      state: {
-        type: String,
-        enum: SignalStateEnum,
-      },
-      context: Object,
-      orderData: Object,
+      message: Object,
       date: Date,
     }],
   },

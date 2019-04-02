@@ -6,16 +6,16 @@ import {
 } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
 import SignalChangeLogType from './SignalChangeLog';
-import SignalStateEnumType from './enum/SignalState';
 
 const Type = new GraphQLObjectType({
   name: 'Signal',
   description: 'Signal definition',
   fields: () => ({
     id: { type: GraphQLID },
-    state: { type: SignalStateEnumType },
     cloneId: { type: GraphQLString },
-    context: { type: GraphQLJSON },
+    orderId: { type: GraphQLString },
+    orderCreator: { type: GraphQLString },
+    orderStatus: { type: GraphQLString },
     orderData: { type: GraphQLJSON },
     changeLogs: {
       type: new GraphQLList(SignalChangeLogType),

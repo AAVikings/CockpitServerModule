@@ -5,41 +5,34 @@ import {
 import GraphQLJSON from 'graphql-type-json';
 import { SignalType } from '../types';
 import { Signal } from '../../models';
-import SignalStateEnum from '../types/enum/SignalState';
+import { WrongArgumentsError } from '../../errors';
 
 
 export const args = {
   cloneId: { type: new GraphQLNonNull(GraphQLString) },
-  state: { type: new GraphQLNonNull(SignalStateEnum) },
-  context: { type: GraphQLJSON },
-  orderData: { type: GraphQLJSON },
-  reason: { type: GraphQLJSON },
+  message: { type: new GraphQLNonNull(GraphQLJSON) },
 };
 
 const resolve = (parent, {
   cloneId,
-  state,
-  context,
-  orderData,
-  reason,
+  message,
 }) => {
+  if (message.order === undefined) {
+    throw new WrongArgumentsError('"message" should contain an "order" property');
+  }
   const date = Date.now();
-  const signal = Object.assign(
-    (state) ? { state } : {},
-    (cloneId) ? { cloneId } : {},
-    (context) ? { context } : {},
-    (orderData) ? { orderData } : {},
-  );
-  const changeLog = Object.assign(
-    (reason) ? { reason } : {},
-    (state) ? { state } : {},
-    (context) ? { context } : {},
-    (orderData) ? { orderData } : {},
-    { date },
-  );
-  signal.changeLogs = [changeLog];
 
-  const newSignal = new Signal(signal);
+  const newSignal = new Signal({
+    cloneId,
+    orderId: message.order.id,
+    orderCreator: message.order.creator,
+    orderStatus: message.order.status,
+    orderData: message.order,
+    changeLogs: [{
+      message,
+      date,
+    }],
+  });
 
   return new Promise((res, rej) => {
     newSignal.save((err) => {
