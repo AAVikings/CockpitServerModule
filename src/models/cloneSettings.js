@@ -9,7 +9,7 @@ const cloneSettingsSchema = new Schema(
     autopilot: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     changeLogs: [{
       reason: Object,
