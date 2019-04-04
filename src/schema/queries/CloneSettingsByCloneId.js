@@ -20,7 +20,7 @@ const resolve = (parent, { cloneId }) => new Promise((res, rej) => {
       const newCloneSettings = new CloneSettings({
         cloneId,
         changeLogs: [{
-          autopilot: false,
+          autopilot: true,
           date,
         }],
       });
