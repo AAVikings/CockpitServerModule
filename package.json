@@ -1,5 +1,5 @@
 {
-  "name": "cockpit-server",
+  "name": "@superalgos/cockpit-api",
   "version": "0.0.1",
   "description": "Superalgos cockpit backend API",
   "author": "Apache-2.0",
