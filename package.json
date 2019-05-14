@@ -1,9 +1,9 @@
 {
-  "name": "cockpit-server",
+  "name": "@superalgos/cockpit-api",
   "version": "0.0.1",
-  "description": "Advanced Algos cockpit backend API",
-  "author": "",
-  "license": "",
+  "description": "Superalgos cockpit backend API",
+  "author": "Apache-2.0",
+  "license": "Superalgos, ltd.",
   "main": "src/index.js",
   "repository": {
     "type": "git",
