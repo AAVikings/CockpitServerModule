@@ -3,6 +3,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import schema from './schema';
 import wrongPreshared from './errors/notAllowed.json';
+import db from './db';
 
 const app = express();
 
@@ -40,4 +41,14 @@ server.applyMiddleware({
   cors: true,
 });
 
-export default app;
+db.on('error', (err) => {
+  console.log(err);
+});
+db.once('open', () => {
+  console.log('Connected to the DB.');
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port ${process.env.PORT}`);
+});
+
